@@ -2,92 +2,129 @@
 
 **SSH, Telnet and local terminals for network engineers on macOS and Linux.**
 
-Termiverma brings terminal sessions, device inventory, saved accounts and command
-snippets into one desktop workspace.
-
 [Download the latest release](https://github.com/zaverma/termiverma-releases/releases/latest)
 · [All releases](https://github.com/zaverma/termiverma-releases/releases)
 · [Website](https://zaverma.com)
+
+Termiverma brings terminal sessions, device inventory, saved accounts and command
+snippets into one desktop workspace. **Version 0.5** adds split Workspaces,
+live transfers between windows, optional terminal Logs and custom highlighting.
 
 This repository distributes application binaries, update metadata and release
 notes. Termiverma is proprietary commercial software by **zaverma**; its source
 code is not distributed here.
 
-## Features
+## At a glance
 
-### Connections and terminal workspace
+| Feature | What you can do |
+| --- | --- |
+| **Terminals** | Connect over SSH or Telnet, open local shells, search output and manage separate Connections / Local tab groups. |
+| **Workspaces** | Combine up to four terminals in columns, rows or a 2×2 grid; resize, detach and move live sessions between windows. |
+| **Hosts and NetBox** | Search local devices and an offline NetBox cache, filter and group inventory, and save your table layout. |
+| **Accounts** | Reuse saved username/password accounts and integration tokens from an encrypted local Vault. |
+| **Snippets** | Organize commands in nested folders or sync multiple read-only Git libraries, including their directory structure. |
+| **Terminal Logs** | Opt in to local session recording and read-only playback, with configurable retention. Recording starts **off**. |
+| **Appearance** | Use English or Ukrainian, Light / Dark / System appearance, terminal palettes and custom word highlighting. |
+| **Updates** | Check for signed in-app updates on supported macOS bundles and Linux AppImages. |
 
-- Connect over SSH or Telnet from Quick Connect, a saved host or connection
-  history. Enter an address directly or explicitly select an inventory suggestion
-  by a partial device name or address. A typed address is used as entered, with
-  an IP's CIDR suffix removed before connecting; the app does not substitute
-  another inventory address automatically.
-- SSH negotiates modern algorithms first and includes a bounded compatibility
-  policy for supported older network equipment, including legacy Cisco devices.
-  No per-host algorithm settings are required. Host keys are checked during the
-  handshake: first use asks for trust, recognized keys proceed, and changed keys
-  block authentication until the old and new fingerprints are reviewed and the
-  replacement is explicitly accepted.
-- SSH supports password, keyboard-interactive and supported local identity-file
-  or SSH-agent authentication. Saved password accounts are managed in Vault;
-  storing private keys inside Accounts is not included.
-- Use separate **Connections** and **Local** tab groups. Local opens an interactive
-  shell in your home directory. Switching groups retains running sessions, tab
-  order and the selected tab. Drag tabs to reorder them.
-- Open multiple application windows with independent terminal workspaces. Windows
-  share inventory, history, snippets and Vault/security state. Closing a window
-  closes its sessions while sessions in other windows continue.
-- Choose among six remote-tab title formats using address, username and inventory
-  hostname, or give any tab a custom name. The actual endpoint remains available
-  in its tooltip.
-- Search the active terminal's available output and scrollback. Use independent
-  terminal color palettes and optional IPv4, IPv6, MAC, URL and hostname
-  highlighting.
-- When a remote session ends, its output remains behind a blurred reconnect
-  overlay. Reconnect uses the same destination and saved-account reference when
-  available; **Close tab** is available in the same overlay.
+## Screenshots
 
-### Hosts and NetBox
+Screenshots use demonstration data with example hostnames and addresses.
 
-- Maintain local devices with roles, sites, site groups, regions, platforms,
-  status and tags. Search, filter, group and sort the catalogue; choose visible
-  table columns and inspect a device in a resizable side panel.
-- Sync one read-only NetBox source using Primary IP, with configurable device
-  role/status filters and address preference. Available Site Group and Region
-  hierarchy is included in the inventory.
-- Search and connect from the last complete offline NetBox cache. Local account
-  and connection overrides survive successful inventory refreshes. Sync is
-  started explicitly; it does not write inventory changes back to NetBox.
-- Use one default SSH account across devices, choose an account per device, or
-  sign in manually. Recent connections show the inventory name and exact address
-  when the name is unambiguous.
+**SSH terminal and live tabs**
 
-### Accounts and snippets
+![SSH terminal with live session tabs and terminal output](assets/screenshots/02-terminal.jpg)
 
-- Store named username/password accounts and integration tokens in a locally
-  encrypted Vault. The same master password unlocks Vault and the optional
-  application lock. Turning off the UI lock keeps Vault encrypted at rest;
-  application and Vault inactivity timeouts are configurable.
-- Create local snippets and nested folders, or sync multiple read-only Git
-  snippet repositories while preserving their directory structure. Public and
-  private HTTPS repositories are supported using installed Git credentials or
-  an access token stored in Vault. Repositories can be removed from the app
-  without deleting the remote repository.
-- Keep a cached Git library available offline. Run commands explicitly from the
-  library or a resizable panel beside a connected remote or Local terminal.
-  Folder expansion and panel scroll position are remembered.
-- **Protected** snippets require confirmation of the target and final command
-  before each run. Synchronizing, selecting a snippet or opening the application
-  does not execute commands. Git content remains read-only in Termiverma.
+| Hosts catalogue | Snippets library |
+| --- | --- |
+| ![Hosts catalogue with demonstration devices and adjustable columns](assets/screenshots/01-hosts.jpg) | ![Command snippets organized in nested folders](assets/screenshots/03-snippets.jpg) |
+| **Session Logs** | **Custom highlighting** |
+| ![Recorded terminal sessions and connection results](assets/screenshots/04-logs.jpg) | ![Custom terminal text highlighting settings](assets/screenshots/05-highlighting.jpg) |
 
-### Appearance and updates
+<details>
+<summary>Recorded terminal output</summary>
 
-- English and Ukrainian interfaces; Light, Dark and System appearance.
-- Signed in-app updates for supported macOS application bundles and Linux
-  AppImages, with download progress, signature verification and a separate
-  restart choice. Settings also provides a manual update check.
-- Linux AppImages register an application launcher and icons at the user level,
-  allowing Termiverma to be pinned to the desktop environment's dock/favorites.
+![Read-only terminal history with demonstration device output](assets/screenshots/06-recorded-output.jpg)
+
+</details>
+
+## Features in detail
+
+### Connections and Workspaces
+
+- Connect from Quick Connect, Hosts or connection history. Typed addresses are
+  used as entered, with an IP's CIDR suffix removed before connecting. Inventory
+  suggestions are selected explicitly; they never replace your address silently.
+- SSH negotiates modern algorithms first and includes compatibility support for
+  supported older network equipment. Host-key verification is mandatory: first
+  use asks for trust, and changed keys require review of both fingerprints and
+  explicit acceptance before authentication.
+- Use password, keyboard-interactive, supported local identity-file or SSH-agent
+  authentication. Accounts stores saved passwords; saved private keys are not
+  included.
+- Drag a tab onto another terminal's edge to create a Workspace. Hold the active
+  tab over a different tab to reveal its terminal before dropping. Up to four
+  panes support columns, rows and a **2×2** grid. Resize boundaries, detach a pane
+  into an ordinary tab or move individual terminals between application windows
+  while retaining the live connection and output.
+- Reorder or rename tabs, choose remote-tab title formats, search output and
+  reconnect ended sessions. Local terminals open a shell in your home directory.
+  Switching Connections / Local retains running sessions. Closing a window ends
+  its sessions; sessions in other windows continue.
+- Customize terminal palettes and highlighting for network addresses, URLs and
+  hostnames. Add literal word, phrase and symbol rules with custom colors, case
+  sensitivity and priority; changes apply to open terminals.
+
+### Hosts and read-only NetBox inventory
+
+- Search, filter, group and sort devices; inspect their details in a side panel.
+  Expand filters and grouping from **Filters**, choose visible **Columns** and
+  switch between Compact / Comfortable density. Column order, manually resized
+  widths and density are remembered. Automatic columns fit displayed content
+  and share unused width evenly.
+- Sync one NetBox source using Primary IP, with role/status filters, an address
+  preference and available Site Group / Region hierarchy. Keep the last complete
+  cache available offline. Refreshes preserve local connection and account
+  overrides and never write inventory changes back to NetBox.
+- Resume manual Sync after Vault unlock and retain selected role names. Optional
+  background refresh has a configurable timer, starts disabled, pauses while the
+  application or Vault is locked and preserves the cache if a refresh fails.
+- Choose a default SSH account, select an account per device or sign in manually.
+
+### Encrypted Vault and command snippets
+
+- Store username/password accounts and integration tokens in a locally encrypted
+  Vault. Application lock and Vault have configurable inactivity timeouts.
+  Turning off the UI lock keeps Vault encrypted at rest.
+- Create local snippets in nested folders or sync multiple public/private HTTPS
+  Git repositories. Git credentials or a Vault-stored access token can be used.
+  Repository directory structure and the offline cache are preserved. Removing
+  a repository from Termiverma does not delete its remote repository.
+- Run a command explicitly from the library or the resizable Snippets panel.
+  **Protected** snippets require confirmation of the target and final command
+  before each run. Syncing or selecting a snippet does not execute it. Git sync
+  is read-only; publishing snippets from the app is outside its scope.
+
+### Terminal Logs
+
+- **Logs**, above Settings in the sidebar, lists recorded terminal sessions with
+  their time and SSH connection result. Local terminals have no connection status;
+  Telnet reports client startup without claiming a verified connection or login.
+- Double-click a session, press Enter or use View to open its output read-only,
+  with recorded ANSI colors and terminal size changes. Viewing a log does not
+  reconnect or send commands to a device.
+- Recording is **off by default**. Enable **Settings → Logs → Record terminal
+  sessions**, choose retention from **1 to 365 days** (default **30**), then open a
+  new terminal. Disabling stops current recordings and keeps existing history
+  until expiry. Earlier sessions cannot be recovered retroactively.
+- Expired records are deleted automatically; individual deletion and Clear are
+  available. Recording is limited to 16 MiB per session and marks incomplete
+  records if the limit or recording backpressure is reached. The viewer also
+  bounds its retained scrollback and labels any display limit.
+- Output is stored locally **without encryption** and may contain sensitive text
+  printed by a device. Hidden password input, credential-provider secrets and
+  application authentication challenges are not recorded. Journals are not
+  uploaded to Git or NetBox.
 
 ## Installation
 
@@ -139,6 +176,7 @@ installed `telnet` client available to the application.
 | New tab in the selected Connections / Local group | ⌘T | Ctrl+T |
 | Close the active tab | ⌘W | Ctrl+W |
 | New application window | ⌘Shift+N | Ctrl+Shift+N |
+| Switch the active Workspace pane | ⌘Option+Arrow | Ctrl+Alt+Arrow |
 | Search the active terminal output | ⌘F | Ctrl+F |
 | Next / previous search match, from the search input | Enter / Shift+Enter | Enter / Shift+Enter |
 | Close terminal search | Escape | Escape |
@@ -166,10 +204,11 @@ update is installed.
 
 ## Scope and ownership
 
-Version 0.4 does not include serial/USB console access, SCP/SFTP transfers,
-terminal splits, bulk snippet jobs, data import/export or KeePassXC integration.
-Git synchronization is read-only; publishing snippets to Git from the app is
-outside its scope.
+Version 0.5 does not include serial/USB console access, SCP/SFTP transfers,
+configuration comparison, bulk snippet jobs, data import/export or KeePassXC
+integration. Encrypted terminal journals and log export remain planned. Native
+interaction checks for the new Workspaces and Logs interfaces, and Linux runtime
+qualification, remain outstanding.
 
 Product information and contact: [zaverma.com](https://zaverma.com).
 
